@@ -29,5 +29,10 @@ php:7.3:
   coverage: /Lines:\s*([0-9.]+)/
   variables:
     PHP_VERSION: "7.3"
+  before_script:
+  - pecl install xdebug
+  - docker-php-ext-install bcmath
+  - docker-php-ext-enable xdebug
+  - composer install
   script:
   - composer test -- --coverage-text --colors=never
