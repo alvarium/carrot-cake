@@ -1,0 +1,30 @@
+stages:
+- test
+
+.test: &test
+  image: "alvarium/php:${PHP_VERSION}"
+  before_script:
+  - docker-php-ext-install bcmath
+  - composer install
+  script:
+  - composer test
+
+php:7.0:
+  <<: *test
+  variables:
+    PHP_VERSION: "7.0"
+
+php:7.1:
+  <<: *test
+  variables:
+    PHP_VERSION: "7.1"
+
+php:7.2:
+  <<: *test
+  variables:
+    PHP_VERSION: "7.2"
+
+php:7.3:
+  <<: *test
+  variables:
+    PHP_VERSION: "7.3"
