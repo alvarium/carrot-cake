@@ -26,5 +26,8 @@ php:7.2:
 
 php:7.3:
   <<: *test
+  coverage: Lines:\s*([0-9.]+)
   variables:
     PHP_VERSION: "7.3"
+  script:
+  - composer test -- --coverage-text --colors=never

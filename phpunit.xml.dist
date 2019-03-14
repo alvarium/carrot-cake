@@ -13,11 +13,10 @@
 
     <!-- Add any additional test suites you want to run here -->
     <testsuites>
-        <testsuite name="RabbitMQ">
+        <testsuite name="Alvarium's CarrotCake Test Suite">
             <directory>tests/TestCase/</directory>
         </testsuite>
     </testsuites>
-
     <!-- Setup a listener for fixtures -->
     <listeners>
         <listener class="\Cake\TestSuite\Fixture\FixtureInjector">
@@ -32,5 +31,4 @@
             <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
-
 </phpunit>

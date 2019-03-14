@@ -1,6 +1,12 @@
 # Kyarottokēki plugin for CakePHP
 
-Carrot Cake (we like to pronounce it in japanese btw: _Kyarottokēki_ [キャロットケーキ]) is a CakePHP plugin for publishing and subscribing to RabbitMQ queues/exchanges.
+[![pipeline status][pipeline status svg]][pipelines]
+[![coverage status][coverage status svg]][jobs]
+
+
+Carrot Cake is a CakePHP plugin for publishing and subscribing to RabbitMQ queues/exchanges.
+
+BTW we like to pronounce it like in japanese: _Kyarottokēki_ (キャロットケーキ), that's why we wrote it that way in the title :smile:.
 
 ## Installation
 
@@ -101,3 +107,7 @@ $this->addBehaviors([
 Copyright Alvarium.io (c) 2019
 
 [license]: ./LICENSE
+[pipeline status svg]: https://gitlab.com/alvarium.io/packages/cakephp/carrot-cake/badges/master/pipeline.svg
+[coverage status svg]: https://gitlab.com/alvarium.io/packages/cakephp/carrot-cake/badges/master/coverage.svg
+[pipelines]: https://gitlab.com/alvarium.io/packages/cakephp/carrot-cake/pipelines
+[jobs]: https://gitlab.com/alvarium.io/packages/cakephp/carrot-cake/-/jobs
