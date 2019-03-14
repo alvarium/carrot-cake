@@ -24,16 +24,24 @@ The contents of such file can be with any of the following settings:
 <?php
 
 return [
-  'host' => 'rabbit',
-  'port' => 5672,
-  'user' => 'guest',
-  'password' => 'guest',
-  'vhost' => '/',
-  'type' => 'direct',
+    'server' => [
+        'host' => 'rabbit',
+        'port' => 5672,
+        'user' => 'guest',
+        'password' => 'guest',
+        'vhost' => '/',
+        'type' => 'direct',
+    ],
+    'behavior' => [
+      // Check out the behavior section for details about its settings
+    ],
+    'component' => [
+      // Check out the component section for details about its settings
+    ],
 ];
 ~~~
 
-### Publisher
+### Publisher Behavior
 
 First you'll need to load the behavior in the desired table, when doing so you can override any of the previously defined settings + some specific settings for the behavior, like the used exchange (by default is `tablename`):
 

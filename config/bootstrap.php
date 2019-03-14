@@ -3,12 +3,16 @@
 use Cake\Core\Configure;
 
 $rabbit = [
-    'host' => 'rabbit',
-    'port' => 5672,
-    'user' => 'guest',
-    'password' => 'guest',
-    'vhost' => '/',
-    'type' => 'direct',
+    'server' => [
+        'host' => 'rabbit',
+        'port' => 5672,
+        'user' => 'guest',
+        'password' => 'guest',
+        'vhost' => '/',
+        'type' => 'direct',
+    ],
+    'behavior' => [],
+    'component' => [],
 ];
 
 Configure::write('rabbit', $rabbit);

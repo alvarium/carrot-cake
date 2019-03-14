@@ -1,6 +1,7 @@
 <?php
 namespace Alvarium\CarrotCake\Test\TestCase\Model\Behavior;
 
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 use Cake\ORM\TableRegistry;
 use Alvarium\CarrotCake\Model\Behavior\PublisherBehavior;
@@ -35,6 +36,10 @@ class PublisherBehaviorTest extends TestCase
             'table' => 'ck_members'
         ]);
 
+        $this->Members->addBehaviors([
+            'Alvarium/CarrotCake.Publisher',
+        ]);
+
         $this->Behavior = $this->Members->behaviors()->Publisher;
     }
 
@@ -45,9 +50,28 @@ class PublisherBehaviorTest extends TestCase
      */
     public function tearDown()
     {
-        unset($this->Publisher);
+        unset($this->Behavior);
+        unset($this->Members);
 
         parent::tearDown();
+    }
+
+    /**
+     * Test behavior initialization
+     *
+     * @return void
+     */
+    public function testInitialize()
+    {
+        // Should load settings set via config file
+        Configure::write('rabbit.behavior.exchange', 'test');
+        $this->Behavior->initialize([]);
+        $this->assertTextEquals('test', $this->Behavior->getConfig('exchange'));
+
+        // Same if we spaceify it directly to the initialize method
+        Configure::write('rabbit.behavior.exchange', '');
+        $this->Behavior->initialize(['exchange' => 'test']);
+        $this->assertTextEquals('test', $this->Behavior->getConfig('exchange'));
     }
 
     /**

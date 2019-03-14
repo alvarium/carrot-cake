@@ -3,6 +3,7 @@
 namespace Alvarium\CarrotCake\Model\Behavior;
 
 use ArrayObject;
+use Cake\Core\Configure;
 use Cake\Event\Event;
 use Cake\Datasource\EntityInterface;
 use Cake\ORM\Behavior;
@@ -25,6 +26,19 @@ class PublisherBehavior extends Behavior
         ],
         'exchange' => '',
     ];
+
+    public function initialize(array $config)
+    {
+        parent::initialize($config);
+
+        $settings = array_replace_recursive(
+            $this->_defaultConfig,
+            Configure::read('rabbit.behavior'),
+            $config
+        );
+
+        $this->setConfig($settings);
+    }
 
     public function save(Event $event, EntityInterface $entity, ArrayObject $options)
     {
