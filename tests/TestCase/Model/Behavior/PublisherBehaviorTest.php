@@ -74,6 +74,12 @@ class PublisherBehaviorTest extends TestCase
         $this->assertTextEquals('test', $this->Behavior->getConfig('exchange'));
     }
 
+    public function testPublish()
+    {
+        $this->Behavior->initialize(['exchange' => 'testing']);
+        $this->assertNull($this->Behavior->publish('test', 'testing'));
+    }
+
     /**
      * Test save.
      *
@@ -81,6 +87,15 @@ class PublisherBehaviorTest extends TestCase
      */
     public function testSave()
     {
+        // $spy = $this->prophesize(PublisherBehavior::class);
+
+        // $member = $this->Members->newEntity([
+        //     'name' => 'John Doe',
+        // ]);
+
+        // $this->Members->save($member);
+
+        // $spy->publish($member, 'created', 'json', 'members')->shouldHaveBeenCalled();
         $this->markTestIncomplete('Not implemented yet.');
     }
 

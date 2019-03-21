@@ -15,10 +15,6 @@ class PublisherBehavior extends Behavior
     public $connection = null;
     protected $channel = null;
     protected $_defaultConfig = [
-        'implementedMethods' => [
-            'afterSave' => 'save',
-            'afterDelete' => 'delete',
-        ],
         'routes' => [
             'create' => 'created',
             'update' => 'updated',
@@ -33,6 +29,7 @@ class PublisherBehavior extends Behavior
 
         $settings = array_replace_recursive(
             $this->_defaultConfig,
+            Configure::read('rabbit.server'),
             Configure::read('rabbit.behavior'),
             $config
         );
@@ -40,21 +37,45 @@ class PublisherBehavior extends Behavior
         $this->setConfig($settings);
     }
 
-    public function save(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function afterSave(Event $event, EntityInterface $entity, ArrayObject $options)
     {
+        $exchange = lcfirst($event->getSubject()->getAlias());
+
         $route = $this->getConfig('routes')['create'];
         if (!$entity->isNew()) {
             $route = $this->getConfig('routes')['update'];
         }
 
-        $this->publish($entity, $route);
+        $this->publish($entity, $route, 'json', $exchange);
     }
 
-    public function delete(Event $event, EntityInterface $entity, ArrayObject $options)
+    public function afterDelete(Event $event, EntityInterface $entity, ArrayObject $options)
     {
+        $exchange = lcfirst($event->getSubject()->getAlias());
+
         $route = $this->getConfig('routes')['delete'];
 
-        $this->publish($entity, $route);
+        $this->publish($entity, $route, 'json', $exchange);
+    }
+
+    public function getConnection()
+    {
+        if (!$this->connection) {
+            $this->connection = new AMQPStreamConnection(
+                $this->getConfig('host'),
+                $this->getConfig('port'),
+                $this->getConfig('user'),
+                $this->getConfig('password'),
+                $this->getConfig('vhost')
+            );
+        }
+
+        return $this->connection;
+    }
+
+    public function setConnection(AMQPStreamConnection $connection)
+    {
+        $this->connection = $connection;
     }
 
     protected function prepareMessage($message, string $type): AMQPMessage
@@ -82,23 +103,19 @@ class PublisherBehavior extends Behavior
         ]);
     }
 
-    protected function publish($data, string $route, string $type = 'auto'): void
+    public function publish($data, string $route, string $type = 'auto', string $exchange = null): void
     {
+        $exchange = $this->getConfig('exchange') ?: $exchange;
+
         if (method_exists($data, 'toArray')) {
             $data = $data->toArray();
         }
 
-        $this->connection = new AMQPStreamConnection(
-            $this->getConfig('host'),
-            $this->getConfig('port'),
-            $this->getConfig('user'),
-            $this->getConfig('password'),
-            $this->getConfig('vhost')
-        );
-        $this->channel = $this->connection->channel();
+        $connection = $this->getConnection();
+        $this->channel = $connection->channel();
 
         $this->channel->exchange_declare(
-            $this->getConfig('exchange'),
+            $exchange,
             $this->getConfig('type'),
             false,
             true,
@@ -107,7 +124,7 @@ class PublisherBehavior extends Behavior
 
         $this->channel->basic_publish(
             $this->prepareMessage($data, $type),
-            $this->getConfig('exchange'),
+            $exchange,
             $route
         );
     }
