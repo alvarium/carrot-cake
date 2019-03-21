@@ -103,7 +103,7 @@ class PublisherBehavior extends Behavior
         ]);
     }
 
-    public function publish($data, string $route, string $type = 'auto', string $exchange = null): void
+    public function publish($data, string $route, string $type = 'auto', string $exchange = null)
     {
         $exchange = $this->getConfig('exchange') ?: $exchange;
 
