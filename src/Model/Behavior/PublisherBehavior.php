@@ -106,6 +106,7 @@ class PublisherBehavior extends Behavior
     public function publish($data, string $route, string $type = 'auto', string $exchange = null)
     {
         $exchange = $this->getConfig('exchange') ?: $exchange;
+        $exchange = $this->getConfig('prefix') . $exchange;
 
         if (method_exists($data, 'toArray')) {
             $data = $data->toArray();

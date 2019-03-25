@@ -10,6 +10,7 @@ $rabbit = [
         'password' => 'guest',
         'vhost' => '/',
         'type' => 'direct',
+        'prefix' => '',
     ],
     'behavior' => [],
     'component' => [],
