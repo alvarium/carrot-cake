@@ -30,13 +30,14 @@ The contents of such file can be with any of the following settings:
 <?php
 
 return [
+  'rabbit' => [
     'server' => [
-        'host' => 'rabbit',
-        'port' => 5672,
-        'user' => 'guest',
-        'password' => 'guest',
-        'vhost' => '/',
-        'type' => 'direct',
+      'host' => 'rabbit',
+      'port' => 5672,
+      'user' => 'guest',
+      'password' => 'guest',
+      'vhost' => '/',
+      'type' => 'direct',
     ],
     'behavior' => [
       // Check out the behavior section for details about its settings
@@ -44,6 +45,7 @@ return [
     'component' => [
       // Check out the component section for details about its settings
     ],
+  ],
 ];
 ~~~
 

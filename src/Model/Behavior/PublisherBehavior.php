@@ -27,6 +27,10 @@ class PublisherBehavior extends Behavior
     {
         parent::initialize($config);
 
+        if (!Configure::check('rabbit')) {
+            return;
+        }
+
         $settings = array_replace_recursive(
             $this->_defaultConfig,
             Configure::read('rabbit.server'),
